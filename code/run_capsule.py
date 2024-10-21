@@ -255,7 +255,7 @@ if __name__ == "__main__":
         print(f"\tNum. Blocks {num_blocks} - Num. streams: {len(electrical_series_paths)}")
         for electrical_series_path in electrical_series_paths:
             # only use paths in acquisition
-            if "acquisition" in electrical_series_path and "LFP" not in electrical_series_path:
+            if "acquisition" in electrical_series_path:
                 stream_name = electrical_series_path.replace("/", "-")
                 recording = se.read_nwb_recording(nwb_file, electrical_series_path=electrical_series_path)
                 if recording.sampling_frequency < 10000:

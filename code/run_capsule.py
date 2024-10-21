@@ -238,7 +238,7 @@ if __name__ == "__main__":
         if len(nwb_files) == 0:
             raise ValueError("No NWB files found in the data folder")
         elif len(nwb_files) > 1:
-            raise ValueError("Attach one NWB file at a time")
+            raise ValueError("Multiple NWB files found in the data folder. Please only add one at a time")
         nwb_file = nwb_files[0]
         session_name = nwb_file.name
 
@@ -300,6 +300,26 @@ if __name__ == "__main__":
                     break
             if skip_times:
                 recording.reset_times()
+
+            if DEBUG:
+                recording_list = []
+                for segment_index in range(recording.get_num_segments()):
+                    recording_one = si.split_recording(recording)[segment_index]
+                    recording_one = recording_one.frame_slice(
+                        start_frame=0, end_frame=int(DEBUG_DURATION * recording.sampling_frequency)
+                    )
+                    recording_list.append(recording_one)
+                recording = si.append_recordings(recording_list)
+                if HAS_LFP:
+                    recording_lfp_list = []
+                    for segment_index in range(recording_lfp.get_num_segments()):
+                        recording_lfp_one = si.split_recording(recording_lfp)[segment_index]
+                        recording_lfp_one = recording_lfp_one.frame_slice(
+                            start_frame=0, end_frame=int(DEBUG_DURATION * recording_lfp.sampling_frequency)
+                        )
+                        recording_lfp_list.append(recording_lfp_one)
+                    recording_lfp = si.append_recordings(recording_lfp_list)
+
             duration = np.round(recording.get_total_duration(), 2)
 
             if DEBUG:

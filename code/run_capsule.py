@@ -77,12 +77,9 @@ if __name__ == "__main__":
         #
         # - for pipelines, the session data should to be mapped to the "data/ecephys_session" folder
         # - for standalone capsule runs, the data is in "data/ecephys_{session_name}"
-        all_files = [p for p in data_folder.iterdir()]
-        print(f"all_files: {all_files}")
         ecephys_sessions = [
             p for p in data_folder.iterdir() if "ecephys" in p.name.lower() or "behavior" in p.name.lower()
         ]
-        print(f"ecephys_sessions: {ecephys_sessions}")
 
         for session_folder in ecephys_sessions:
             session_name = None
